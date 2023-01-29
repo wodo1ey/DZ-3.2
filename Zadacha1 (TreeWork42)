@@ -1,0 +1,41 @@
+//Дано дерево поиска и указатель на корень этого дерева. Если необходимо, привести дерево к АВЛ-сбалансированному виду, выполнив для этого RR-поворот.
+//Известно, что требуется не более одного таакого поворота.
+
+#include "pt4.h"
+using namespace std;
+
+void RR(PNode& p)
+{
+    PNode q = p->Right;
+    p->Right = q->Left;
+    q->Left = p;
+    p = q;
+}
+
+int Height(PNode node)
+{
+    if (node == NULL) return 0;
+    return 1 + max(Height(node->Left), Height(node->Right));
+}
+
+void isBalanced(PNode& tree)
+{
+    if (!tree) return;
+    isBalanced(tree->Left);
+    isBalanced(tree->Right);
+    int lh = Height(tree->Left);
+    int rh = Height(tree->Right);
+    if (lh + 1 < rh)
+    {
+        RR(tree);
+    }
+}
+
+void Solve()
+{
+    Task("TreeWork42");
+    PNode p;
+    pt >> p;
+    isBalanced(p);
+    pt << p;
+}
